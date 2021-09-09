@@ -1,0 +1,33 @@
+helm repo add harbor https://helm.goharbor.io
+helm fetch harbor/harbor --untar
+cd harbor
+
+helm install myharbor . \
+  --set expose.type=clusterIP \
+  --set expose.tls.enabled=false \
+  --set persistence.enabled=false \
+  --set externalURL=http://$ROUTE_HOST \
+  --set nginx.serviceAccountName=myharbor \
+  --set portal.serviceAccountName=myharbor \
+  --set core.serviceAccountName=myharbor \
+  --set jobservice.serviceAccountName=myharbor \
+  --set registry.serviceAccountName=myharbor \
+  --set chartmuseum.serviceAccountName=myharbor \
+  --set trivy.serviceAccountName=myharbor \
+  --set notary.server.serviceAccountName=myharbor \
+  --set notary.signer.serviceAccountName=myharbor \
+  --set database.internal.serviceAccountName=myharbor \
+  --set redis.internal.serviceAccountName=myharbor \
+  --set exporter.serviceAccountName=myharbor \
+  --set nginx.automountServiceAccountToken=true \
+  --set portal.automountServiceAccountToken=true \
+  --set core.automountServiceAccountToken=true \
+  --set jobservice.automountServiceAccountToken=true \
+  --set registry.automountServiceAccountToken=true \
+  --set chartmuseum.automountServiceAccountToken=true \
+  --set trivy.automountServiceAccountToken=true \
+  --set notary.server.automountServiceAccountToken=true \
+  --set notary.signer.automountServiceAccountToken=true \
+  --set database.internal.automountServiceAccountToken=true \
+  --set redis.internal.automountServiceAccountToken=true \
+  --set exporter.automountServiceAccountToken=true

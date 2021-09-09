@@ -1,0 +1,35 @@
+kind: Project
+apiVersion: project.openshift.io/v1
+metadata:
+  name: harbor-test
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: myharbor
+  namespace: harbor-test
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: anyuid-sa-harbor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:openshift:scc:anyuid
+subjects:
+  - kind: ServiceAccount
+    name: myharbor
+    namespace: harbor-test
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: harbor-portal
+  namespace: harbor-test
+spec:
+  to:
+    kind: Service
+    name: myharbor-portal
+  port:
+    targetPort: 8080
